@@ -1,0 +1,47 @@
+version: "3.4"
+
+volumes:
+  db:
+    driver: local
+
+services:
+  db:
+    image: postgres:15
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=postgres
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+    ports:
+      - 5432:5432
+    volumes:
+      # Creates initial tables
+      - ./services/db/1_create_tables.sql:/docker-entrypoint-initdb.d/1_create_tables.sql
+
+
+  postgraphile:
+    image: ${POSTGRAPHILE_TAGGED_IMAGE:-postgraphile}
+    depends_on:
+      - db
+    build:
+      context: services/postgraphile
+    restart: always
+    environment:
+      DATABASE_URL: postgres://postgres:password@db:5432/postgres
+      GRAPHIQL_ENABLED: 1
+    ports:
+      - 3001:3001
+
+  ui:
+    build:
+      context: services/ui
+    depends_on:
+      - postgraphile
+    environment:
+      # These override anything in the file, even if empty
+      SSR_GRAPHQL_URI: http://postgraphile:3001/graphql
+    command: ["/bin/sh", "-c", "./build_and_start.sh"]
+    ports:
+      - 3000:3000

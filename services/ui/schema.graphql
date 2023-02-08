@@ -1,0 +1,301 @@
+# This file was generated based on ".graphqlconfig". Do not edit manually.
+
+schema {
+    query: Query
+    mutation: Mutation
+    subscription: Subscription
+}
+
+"An object with a globally unique `ID`."
+interface Node {
+    "A globally unique identifier. Can be used in various places throughout the system to identify this single value."
+    nodeId: ID!
+}
+
+"The output of our create `Rocket` mutation."
+type CreateRocketPayload {
+    """
+
+    The exact same `clientMutationId` that was provided in the mutation input,
+    unchanged and unused. May be used by a client to track mutations.
+    """
+    clientMutationId: String
+    "Our root query field type. Allows us to run any query from our mutation payload."
+    query: Query
+    "The `Rocket` that was created by this mutation."
+    rocket: Rocket
+    "An edge for our `Rocket`. May be used by Relay 1."
+    rocketEdge(
+        "The method to use when ordering `Rocket`."
+        orderBy: [RocketsOrderBy!] = [PRIMARY_KEY_ASC]
+    ): RocketsEdge
+}
+
+"The output of our delete `Rocket` mutation."
+type DeleteRocketPayload {
+    """
+
+    The exact same `clientMutationId` that was provided in the mutation input,
+    unchanged and unused. May be used by a client to track mutations.
+    """
+    clientMutationId: String
+    deletedRocketId: ID
+    "Our root query field type. Allows us to run any query from our mutation payload."
+    query: Query
+    "The `Rocket` that was deleted by this mutation."
+    rocket: Rocket
+    "An edge for our `Rocket`. May be used by Relay 1."
+    rocketEdge(
+        "The method to use when ordering `Rocket`."
+        orderBy: [RocketsOrderBy!] = [PRIMARY_KEY_ASC]
+    ): RocketsEdge
+}
+
+type ListenPayload {
+    "Our root query field type. Allows us to run any query from our subscription payload."
+    query: Query
+    relatedNode: Node
+    relatedNodeId: ID
+}
+
+"The root mutation type which contains root level fields which mutate data."
+type Mutation {
+    "Creates a single `Rocket`."
+    createRocket(
+        "The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields."
+        input: CreateRocketInput!
+    ): CreateRocketPayload
+    "Deletes a single `Rocket` using its globally unique id."
+    deleteRocket(
+        "The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields."
+        input: DeleteRocketInput!
+    ): DeleteRocketPayload
+    "Deletes a single `Rocket` using a unique key."
+    deleteRocketById(
+        "The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields."
+        input: DeleteRocketByIdInput!
+    ): DeleteRocketPayload
+    "Updates a single `Rocket` using its globally unique id and a patch."
+    updateRocket(
+        "The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields."
+        input: UpdateRocketInput!
+    ): UpdateRocketPayload
+    "Updates a single `Rocket` using a unique key and a patch."
+    updateRocketById(
+        "The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields."
+        input: UpdateRocketByIdInput!
+    ): UpdateRocketPayload
+}
+
+"Information about pagination in a connection."
+type PageInfo {
+    "When paginating forwards, the cursor to continue."
+    endCursor: Cursor
+    "When paginating forwards, are there more items?"
+    hasNextPage: Boolean!
+    "When paginating backwards, are there more items?"
+    hasPreviousPage: Boolean!
+    "When paginating backwards, the cursor to continue."
+    startCursor: Cursor
+}
+
+"The root query type which gives access points into the data universe."
+type Query implements Node {
+    "Reads and enables pagination through a set of `Rocket`."
+    allRockets(
+        "Read all values in the set after (below) this cursor."
+        after: Cursor,
+        "Read all values in the set before (above) this cursor."
+        before: Cursor,
+        "A condition to be used in determining which values should be returned by the collection."
+        condition: RocketCondition,
+        "Only read the first `n` values of the set."
+        first: Int,
+        "Only read the last `n` values of the set."
+        last: Int,
+        """
+
+        Skip the first `n` values from our `after` cursor, an alternative to cursor
+        based pagination. May not be used with `last`.
+        """
+        offset: Int,
+        "The method to use when ordering `Rocket`."
+        orderBy: [RocketsOrderBy!] = [PRIMARY_KEY_ASC]
+    ): RocketsConnection
+    "Fetches an object given its globally unique `ID`."
+    node(
+        "The globally unique `ID`."
+        nodeId: ID!
+    ): Node
+    "The root query type must be a `Node` to work well with Relay 1 mutations. This just resolves to `query`."
+    nodeId: ID!
+    """
+
+    Exposes the root query type nested one level down. This is helpful for Relay 1
+    which can only query top level fields if they are in a particular form.
+    """
+    query: Query!
+    "Reads a single `Rocket` using its globally unique `ID`."
+    rocket(
+        "The globally unique `ID` to be used in selecting a single `Rocket`."
+        nodeId: ID!
+    ): Rocket
+    rocketById(id: UUID!): Rocket
+}
+
+type Rocket implements Node {
+    id: UUID!
+    name: String!
+    "A globally unique identifier. Can be used in various places throughout the system to identify this single value."
+    nodeId: ID!
+    year: Int!
+}
+
+"A connection to a list of `Rocket` values."
+type RocketsConnection {
+    "A list of edges which contains the `Rocket` and cursor to aid in pagination."
+    edges: [RocketsEdge!]!
+    "A list of `Rocket` objects."
+    nodes: [Rocket]!
+    "Information to aid in pagination."
+    pageInfo: PageInfo!
+    "The count of *all* `Rocket` you could get from the connection."
+    totalCount: Int!
+}
+
+"A `Rocket` edge in the connection."
+type RocketsEdge {
+    "A cursor for use in pagination."
+    cursor: Cursor
+    "The `Rocket` at the end of the edge."
+    node: Rocket
+}
+
+"The root subscription type: contains realtime events you can subscribe to with the `subscription` operation."
+type Subscription {
+    listen(topic: String!): ListenPayload!
+}
+
+"The output of our update `Rocket` mutation."
+type UpdateRocketPayload {
+    """
+
+    The exact same `clientMutationId` that was provided in the mutation input,
+    unchanged and unused. May be used by a client to track mutations.
+    """
+    clientMutationId: String
+    "Our root query field type. Allows us to run any query from our mutation payload."
+    query: Query
+    "The `Rocket` that was updated by this mutation."
+    rocket: Rocket
+    "An edge for our `Rocket`. May be used by Relay 1."
+    rocketEdge(
+        "The method to use when ordering `Rocket`."
+        orderBy: [RocketsOrderBy!] = [PRIMARY_KEY_ASC]
+    ): RocketsEdge
+}
+
+"Methods to use when ordering `Rocket`."
+enum RocketsOrderBy {
+    ID_ASC
+    ID_DESC
+    NAME_ASC
+    NAME_DESC
+    NATURAL
+    PRIMARY_KEY_ASC
+    PRIMARY_KEY_DESC
+    YEAR_ASC
+    YEAR_DESC
+}
+
+"A location in a connection that can be used for resuming pagination."
+scalar Cursor
+
+"A universally unique identifier as defined by [RFC 4122](https://tools.ietf.org/html/rfc4122)."
+scalar UUID
+
+"All input for the create `Rocket` mutation."
+input CreateRocketInput {
+    """
+
+    An arbitrary string value with no semantic meaning. Will be included in the
+    payload verbatim. May be used to track mutations by the client.
+    """
+    clientMutationId: String
+    "The `Rocket` to be created by this mutation."
+    rocket: RocketInput!
+}
+
+"All input for the `deleteRocketById` mutation."
+input DeleteRocketByIdInput {
+    """
+
+    An arbitrary string value with no semantic meaning. Will be included in the
+    payload verbatim. May be used to track mutations by the client.
+    """
+    clientMutationId: String
+    id: UUID!
+}
+
+"All input for the `deleteRocket` mutation."
+input DeleteRocketInput {
+    """
+
+    An arbitrary string value with no semantic meaning. Will be included in the
+    payload verbatim. May be used to track mutations by the client.
+    """
+    clientMutationId: String
+    "The globally unique `ID` which will identify a single `Rocket` to be deleted."
+    nodeId: ID!
+}
+
+"A condition to be used against `Rocket` object types. All fields are tested for equality and combined with a logical ‘and.’"
+input RocketCondition {
+    "Checks for equality with the object’s `id` field."
+    id: UUID
+    "Checks for equality with the object’s `name` field."
+    name: String
+    "Checks for equality with the object’s `year` field."
+    year: Int
+}
+
+"An input for mutations affecting `Rocket`"
+input RocketInput {
+    id: UUID
+    name: String!
+    year: Int!
+}
+
+"Represents an update to a `Rocket`. Fields that are set will be updated."
+input RocketPatch {
+    id: UUID
+    name: String
+    year: Int
+}
+
+"All input for the `updateRocketById` mutation."
+input UpdateRocketByIdInput {
+    """
+
+    An arbitrary string value with no semantic meaning. Will be included in the
+    payload verbatim. May be used to track mutations by the client.
+    """
+    clientMutationId: String
+    id: UUID!
+    "An object where the defined keys will be set on the `Rocket` being updated."
+    rocketPatch: RocketPatch!
+}
+
+"All input for the `updateRocket` mutation."
+input UpdateRocketInput {
+    """
+
+    An arbitrary string value with no semantic meaning. Will be included in the
+    payload verbatim. May be used to track mutations by the client.
+    """
+    clientMutationId: String
+    "The globally unique `ID` which will identify a single `Rocket` to be updated."
+    nodeId: ID!
+    "An object where the defined keys will be set on the `Rocket` being updated."
+    rocketPatch: RocketPatch!
+}
